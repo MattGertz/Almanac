@@ -95,7 +95,14 @@ namespace Almanac
 			if (this.cityTimeZone.SelectedItem != null)
 			{
 				timeZoneID = this.cityTimeZone.SelectedItem.ToString();
-				cityTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneID);
+                try 
+				{
+					cityTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneID);
+				}
+				catch (TimeZoneNotFoundException)
+                {
+					// Currently happens with Android; we'll fake it.
+                }
 			}
 			if (cityTimeZoneInfo == null)
             {
