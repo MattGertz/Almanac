@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Almanac.WinUI": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": false
+    }
+  }
+}
