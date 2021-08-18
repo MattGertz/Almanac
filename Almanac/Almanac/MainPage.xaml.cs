@@ -23,11 +23,13 @@ namespace Almanac
 				// Yuck, no timezones, so just throw in a fake
 				Collection<string> fakeData = new Collection<string>();
 				fakeData.Add("Seattle Standard Time");
-				this.cityTimeZone.BindingContext = fakeData;
+				this.cityTimeZone.ItemsSource = fakeData;
+				this.cityTimeZone.SelectedIndex = 0;
 			}
 			else
             {
-				this.cityTimeZone.BindingContext = tzCollection;
+				this.cityTimeZone.ItemsSource = tzCollection;
+				this.cityTimeZone.SelectedIndex = 0;
             }
 		}
 
@@ -89,15 +91,17 @@ namespace Almanac
 			double cityLong = Convert.ToDouble(this.cityLongitude.Text);
 
 			TimeZoneInfo cityTimeZoneInfo = null;
+			string timeZoneID = "";
 			if (this.cityTimeZone.SelectedItem != null)
 			{
-				string timeZoneID = this.cityTimeZone.SelectedItem.ToString();
+				timeZoneID = this.cityTimeZone.SelectedItem.ToString();
 				cityTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneID);
 			}
-			if (cityTimeZoneInfo != null)
+			if (cityTimeZoneInfo == null)
             {
-				cityTimeZoneInfo = FakeTimeZone.GetFakeTimeZoneInfo();	
-            }
+				cityTimeZoneInfo = FakeTimeZone.GetFakeTimeZoneInfo();
+				timeZoneID = cityTimeZoneInfo.DisplayName;
+			}
 
 			// These next few lines allow me to create a DateTime that isn't local to where I'm running it
 			// or to DTC -- I can't otherwise construct a DateTime for a a city out of the running timezone
