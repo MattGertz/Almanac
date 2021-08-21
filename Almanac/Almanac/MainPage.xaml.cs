@@ -127,10 +127,36 @@ namespace Almanac
 			this.cityTime.Text = $"{cityTime.ToString()} ({city.GetTimeZoneString(cityTime)})";
 			this.solarAltitude.Text = $"{currentData.Altitude:F3}°";
 			this.solarAzimuth.Text = $"{currentData.Azimuth:F3}°";
-			this.solarZenithTime.Text = $"{currentData.SolarNoon.ToShortTimeString()}";
+
+			// When displaying zenith, sunrise, and sunset times, we need to be mindful that the location date
+			// might not match the timezone, and so these events could actually fall outside of the current "day"
+			// from the perspective of the time zone -- we need to let the user know that.
+			if (currentData.SolarNoon.Day == cityTime.Day)
+			{
+				this.solarZenithTime.Text = $"{currentData.SolarNoon.ToShortTimeString()}";
+			}
+			else
+            {
+				this.solarZenithTime.Text = $"{currentData.SolarNoon.ToShortTimeString()} ({currentData.SolarNoon.ToShortDateString()})";
+			}
 			this.solarZenithAltitude.Text = $"{zenithData.Altitude:F3}°";
-			this.solarSunrise.Text = $"{currentData.Sunrise.ToShortTimeString()}";
-			this.solarSunset.Text = $"{currentData.Sunset.ToShortTimeString()}";
+
+			if (currentData.Sunrise.Day == cityTime.Day)
+			{
+				this.solarSunrise.Text = $"{currentData.Sunrise.ToShortTimeString()}";
+			}
+			else
+            {
+				this.solarSunrise.Text = $"{currentData.Sunrise.ToShortTimeString()} ({currentData.Sunrise.ToShortDateString()})";
+			}
+			if (currentData.Sunset.Day == cityTime.Day)
+			{
+				this.solarSunset.Text = $"{currentData.Sunset.ToShortTimeString()}";
+			}
+			else
+			{
+				this.solarSunset.Text = $"{currentData.Sunset.ToShortTimeString()} ({currentData.Sunset.ToShortDateString()})";
+			}
 			this.solarDaylight.Text = $"{currentData.Daylight.Hours.ToString()}h {currentData.Daylight.Minutes.ToString()}m {currentData.Daylight.Seconds.ToString()}s";
 
 			SolarEvents.SolarEvent nextSolarEvent;
@@ -139,11 +165,31 @@ namespace Almanac
 			{
 				DateTime nextSolarEventCityTime = TimeZoneInfo.ConvertTime(nextSolarEventTime.Value, cityTimeZoneInfo);
 				SolarData nextSolarEventData = city.AnalyzeDate(nextSolarEventCityTime);
+				SolarData zenithEventData = city.AnalyzeDate(nextSolarEventData.SolarNoon);
+
 
 				this.solarNextEvent.Text = $"{SolarEvents.GetSolarEventName(nextSolarEvent)} ({nextSolarEventCityTime.ToString()})";
-				this.solarZenithAltitudeEvent.Text = $"{nextSolarEventData.Altitude:F3}°";
-				this.solarSunriseEvent.Text = $"{nextSolarEventData.Sunrise.ToShortTimeString()}";
-				this.solarSunsetEvent.Text = $"{nextSolarEventData.Sunset.ToShortTimeString()}";
+
+				// This is the maximum altitude of the sun that day, not the altitude at the minute which the event occurs
+				this.solarZenithAltitudeEvent.Text = $"{zenithEventData.Altitude:F3}°";
+
+				// Again, sunrise/senset could fall on a different day than the event time, so we need to make that clear:
+				if (nextSolarEventData.Sunrise.Day == nextSolarEventCityTime.Day)
+				{
+					this.solarSunriseEvent.Text = $"{nextSolarEventData.Sunrise.ToShortTimeString()}";
+				}
+				else
+				{
+					this.solarSunriseEvent.Text = $"{nextSolarEventData.Sunrise.ToShortTimeString()} ({nextSolarEventData.Sunrise.ToShortDateString()})";
+				}
+				if (nextSolarEventData.Sunset.Day == nextSolarEventCityTime.Day)
+				{
+					this.solarSunsetEvent.Text = $"{nextSolarEventData.Sunset.ToShortTimeString()}";
+				}
+				else
+				{
+					this.solarSunsetEvent.Text = $"{nextSolarEventData.Sunset.ToShortTimeString()} ({nextSolarEventData.Sunset.ToShortDateString()})";
+				}
 				this.solarDaylightEvent.Text = $"{nextSolarEventData.Daylight.Hours.ToString()}h {nextSolarEventData.Daylight.Minutes.ToString()}m {nextSolarEventData.Daylight.Seconds.ToString()}s";
 			}
 		}
