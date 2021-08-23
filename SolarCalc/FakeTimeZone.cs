@@ -18,7 +18,7 @@ namespace SolarCalc
             TimeZoneInfo.TransitionTime startTransition, endTransition;
             startTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 2, 0, 0), 3, 2, DayOfWeek.Sunday);
             endTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 2, 0, 0), 11, 1, DayOfWeek.Sunday);
-            TimeSpan delta = new TimeSpan(1, 0, 0);
+            TimeSpan delta = new(1, 0, 0);
             TimeZoneInfo.AdjustmentRule adjustment;
             adjustment = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(1999, 10, 1), DateTime.MaxValue.Date, delta, startTransition, endTransition);
             TimeZoneInfo.AdjustmentRule[] adjustments = { adjustment };

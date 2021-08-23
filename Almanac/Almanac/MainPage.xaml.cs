@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using SolarCalc;
+using System;
 using System.Collections.ObjectModel;
 
 namespace Almanac
@@ -21,7 +22,7 @@ namespace Almanac
 			if (tzCollection.Count == 0)
             {
 				// Yuck, no timezones, so just throw in a fake
-				Collection<string> fakeData = new Collection<string>();
+				Collection<string> fakeData = new();
 				fakeData.Add("Seattle Standard Time");
 				this.cityTimeZone.ItemsSource = fakeData;
 				this.cityTimeZone.SelectedIndex = 0;
@@ -116,15 +117,12 @@ namespace Almanac
 			DateTime thisTime = DateTime.UtcNow;
 			DateTime cityTime = TimeZoneInfo.ConvertTime(thisTime, cityTimeZoneInfo);
 
-			City city = new City(cityName, cityLat, cityLong, timeZoneID);
+			City city = new(cityName, cityLat, cityLong, timeZoneID);
 
 			SolarData currentData = city.AnalyzeDate(cityTime);
 			SolarData zenithData = city.AnalyzeDate(currentData.SolarNoon);
 
-			string timeString = cityTime.ToString();
-			if (cityTimeZoneInfo.IsDaylightSavingTime(cityTime)) { timeString += " (DST)"; }
-
-			this.cityTime.Text = $"{cityTime.ToString()} ({city.GetTimeZoneString(cityTime)})";
+			this.cityTime.Text = $"{cityTime} ({city.GetTimeZoneString(cityTime)})";
 			this.solarAltitude.Text = $"{currentData.Altitude:F3}°";
 			this.solarAzimuth.Text = $"{currentData.Azimuth:F3}°";
 
@@ -157,18 +155,17 @@ namespace Almanac
 			{
 				this.solarSunset.Text = $"{currentData.Sunset.ToShortTimeString()} ({currentData.Sunset.ToShortDateString()})";
 			}
-			this.solarDaylight.Text = $"{currentData.Daylight.Hours.ToString()}h {currentData.Daylight.Minutes.ToString()}m {currentData.Daylight.Seconds.ToString()}s";
+			this.solarDaylight.Text = $"{currentData.Daylight.Hours}h {currentData.Daylight.Minutes}m {currentData.Daylight.Seconds}s";
 
-			SolarEvents.SolarEvent nextSolarEvent;
-			DateTime? nextSolarEventTime = SolarEvents.GetNextSolarEventUTC(thisTime, out nextSolarEvent);
-			if (nextSolarEventTime != null)
+            DateTime? nextSolarEventTime = SolarEvents.GetNextSolarEventUTC(thisTime, out SolarEvents.SolarEvent nextSolarEvent);
+            if (nextSolarEventTime is not null)
 			{
 				DateTime nextSolarEventCityTime = TimeZoneInfo.ConvertTime(nextSolarEventTime.Value, cityTimeZoneInfo);
 				SolarData nextSolarEventData = city.AnalyzeDate(nextSolarEventCityTime);
 				SolarData zenithEventData = city.AnalyzeDate(nextSolarEventData.SolarNoon);
 
 
-				this.solarNextEvent.Text = $"{SolarEvents.GetSolarEventName(nextSolarEvent)} ({nextSolarEventCityTime.ToString()})";
+				this.solarNextEvent.Text = $"{SolarEvents.GetSolarEventName(nextSolarEvent)} ({nextSolarEventCityTime})";
 
 				// This is the maximum altitude of the sun that day, not the altitude at the minute which the event occurs
 				this.solarZenithAltitudeEvent.Text = $"{zenithEventData.Altitude:F3}°";
@@ -190,7 +187,7 @@ namespace Almanac
 				{
 					this.solarSunsetEvent.Text = $"{nextSolarEventData.Sunset.ToShortTimeString()} ({nextSolarEventData.Sunset.ToShortDateString()})";
 				}
-				this.solarDaylightEvent.Text = $"{nextSolarEventData.Daylight.Hours.ToString()}h {nextSolarEventData.Daylight.Minutes.ToString()}m {nextSolarEventData.Daylight.Seconds.ToString()}s";
+				this.solarDaylightEvent.Text = $"{nextSolarEventData.Daylight.Hours}h {nextSolarEventData.Daylight.Minutes}m {nextSolarEventData.Daylight.Seconds}s";
 			}
 		}
 	}

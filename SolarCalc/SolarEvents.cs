@@ -25,17 +25,17 @@
 
         public static string GetSolarEventName(SolarEvent solarEvent)
         {
-            switch (solarEvent)
+            return solarEvent switch
             {
-                case SolarEvent.VernalEquinox: return "Vernal Equinox";
-                case SolarEvent.SummerSolstice: return "Summer Solstice";
-                case SolarEvent.AutumnalEquinox: return "Autumnal Equinox";
-                case SolarEvent.WinterSolstice: return "Winter Solstice";
-            }
-            return "Invalid solar event";
+                SolarEvent.VernalEquinox => "Vernal Equinox",
+                SolarEvent.SummerSolstice => "Summer Solstice",
+                SolarEvent.AutumnalEquinox => "Autumnal Equinox",
+                SolarEvent.WinterSolstice => "Winter Solstice",
+                _ => "Invalid solar event",
+            };
         }
 
-        private static readonly List<DateTime> eventDates = new List<DateTime>
+        private static readonly List<DateTime> eventDates = new()
         {
             // These are ordered date-wise
             {new DateTime(2021,3,20,9,37,0)},

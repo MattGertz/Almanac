@@ -34,6 +34,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CSharpIsNullAnalyzer" Version="0.1.288-beta">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\SolarCalc\SolarCalc.csproj" />
 	</ItemGroup>
 
