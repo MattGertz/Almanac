@@ -87,13 +87,18 @@ namespace Almanac
 
 		private void Analyze()
 		{
-			string cityName = this.cityName.Text;
+			// Ensure all of the labels are visible:
+			this.labelSolarInformation.IsVisible = true;
+			this.outputGrid.IsVisible = true;
+
+			//string cityName = this.cityName.Text;
+			string cityName = "Unused currently";
 			double cityLat = Convert.ToDouble(this.cityLatitude.Text);
 			double cityLong = Convert.ToDouble(this.cityLongitude.Text);
 
 			TimeZoneInfo cityTimeZoneInfo = null;
 			string timeZoneID = "";
-			if (this.cityTimeZone.SelectedItem != null)
+			if (this.cityTimeZone.SelectedItem is not null)
 			{
 				timeZoneID = this.cityTimeZone.SelectedItem.ToString();
                 try 
@@ -105,7 +110,7 @@ namespace Almanac
 					// Currently happens with Android; we'll fake it.
                 }
 			}
-			if (cityTimeZoneInfo == null)
+			if (cityTimeZoneInfo is null)
             {
 				cityTimeZoneInfo = FakeTimeZone.GetFakeTimeZoneInfo();
 				timeZoneID = cityTimeZoneInfo.DisplayName;

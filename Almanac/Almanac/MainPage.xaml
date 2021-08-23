@@ -1,86 +1,98 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Almanac.MainPage"
-             BackgroundColor="White">
+             >
+  <ContentPage.Background>
+    <LinearGradientBrush>
+      <GradientStop Color="Yellow"
+                    Offset="0.1" />
+      <GradientStop Color="SkyBlue"
+                    Offset="1.0" />
+    </LinearGradientBrush>
 
-    <StackLayout>
-        <Label Text="Location information" FontAttributes="Bold" FontSize="24" TextColor="Black" HorizontalOptions="CenterAndExpand"/>
-        <Grid Margin="10" ColumnSpacing="12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+  </ContentPage.Background>
 
-            <Label Grid.Row="0" Grid.Column="0" Text="City Name" TextColor="Black" VerticalOptions="CenterAndExpand"/>
-            <Entry Grid.Row="0" Grid.Column="1" x:Name="cityName" Text="Seattle" Completed="OnCityNameCompleted"/>
-            <Label Grid.Row="1" Grid.Column="0" Text="Latitude" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
-            <Entry Grid.Row="1" Grid.Column="1" x:Name="cityLatitude" Text="47.6062"  Keyboard="Numeric" Completed="OnLatitudeCompleted"/>
-            <Label Grid.Row="2" Grid.Column="0" Text="Longitude" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
-            <Entry Grid.Row="2" Grid.Column="1" x:Name="cityLongitude"  Text="-122.3321" Keyboard="Numeric" Completed="OnLongitudeCompleted"/>
-            <Label Grid.Row="3" Grid.Column="0" Text="Time Zone" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
-            <Picker Grid.Row="3" Grid.Column="1" x:Name="cityTimeZone" TextColor="Black" SelectedIndexChanged="OnTimeZoneSelected"/>
-        </Grid>
+  <StackLayout>
+    <Label Text="Location information" FontAttributes="Bold" FontSize="24" TextColor="Black" HorizontalOptions="CenterAndExpand"/>
+    <Grid Margin="10" ColumnSpacing="12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="50"/>
+        <RowDefinition Height="50"/>
+        <RowDefinition Height="50"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
 
-        <Button Text="Go!" HorizontalOptions="CenterAndExpand" Clicked="OnAnalyze" Margin="12"/>
-        <Label Text="Solar Information" HorizontalOptions="CenterAndExpand" FontSize="24" FontAttributes="Bold" TextColor="Black"></Label>
+      
+      <!--
+      TODO:  Add functionality for saving/loading a location based on city name, or perhaps pre-populate lat/long/timezones with major cities, etc.
+      <Label Grid.Row="0" Grid.Column="0" Text="City Name" TextColor="Black" VerticalOptions="CenterAndExpand"/>
+      <Entry Grid.Row="0" Grid.Column="1" x:Name="cityName" Text="Seattle" Completed="OnCityNameCompleted"/>
+      -->
+      <Label Grid.Row="0" Grid.Column="0" Text="Latitude" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
+      <Entry Grid.Row="0" Grid.Column="1" x:Name="cityLatitude" Text="47.6062"  Keyboard="Numeric" Completed="OnLatitudeCompleted"/>
+      <Label Grid.Row="1" Grid.Column="0" Text="Longitude" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
+      <Entry Grid.Row="1" Grid.Column="1" x:Name="cityLongitude"  Text="-122.3321" Keyboard="Numeric" Completed="OnLongitudeCompleted"/>
+      <Label Grid.Row="2" Grid.Column="0" Text="Time Zone" TextColor="Black"  VerticalOptions="CenterAndExpand"/>
+      <Picker Grid.Row="2" Grid.Column="1" x:Name="cityTimeZone" TextColor="Black" SelectedIndexChanged="OnTimeZoneSelected"/>
+    </Grid>
 
-        <Grid Margin="10" ColumnSpacing="12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Label FontSize="10" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" Text="Local Time" TextColor="Black" />
-            <Label FontSize="10" Grid.Row="1" Grid.Column="0" FontAttributes="Bold" Text="Solar altitude" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="2" Grid.Column="0" FontAttributes="Bold" Text="Solar azimuth" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="3" Grid.Column="0" FontAttributes="Bold" Text="Zenith time" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="4" Grid.Column="0" FontAttributes="Bold" Text="Zenith altitude" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="5" Grid.Column="0" FontAttributes="Bold" Text="Sunrise" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="6" Grid.Column="0" FontAttributes="Bold" Text="Sunset" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="7" Grid.Column="0" FontAttributes="Bold" Text="Total daylight" TextColor="Black"  />
+    <Button Text="Go!" HorizontalOptions="CenterAndExpand" Clicked="OnAnalyze" Margin="12"/>
+    <Label x:Name="labelSolarInformation" Text="Solar Information" IsVisible="false" HorizontalOptions="CenterAndExpand" FontSize="24" FontAttributes="Bold" TextColor="Black"></Label>
 
-            <Label FontSize="10" Grid.Row="0" Grid.Column="1" x:Name="cityTime" TextColor="Black" />
-            <Label FontSize="10" Grid.Row="1" Grid.Column="1" x:Name="solarAltitude" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="2" Grid.Column="1" x:Name="solarAzimuth" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="3" Grid.Column="1" x:Name="solarZenithTime" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="4" Grid.Column="1" x:Name="solarZenithAltitude" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="5" Grid.Column="1" x:Name="solarSunrise" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="6" Grid.Column="1" x:Name="solarSunset" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="7" Grid.Column="1" x:Name="solarDaylight" TextColor="Black"  />
+    <Grid x:Name="outputGrid" IsVisible="false" Margin="10" ColumnSpacing="12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+        <RowDefinition Height="20"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Label FontSize="10" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" Text="Local Time" TextColor="Black" />
+      <Label FontSize="10" Grid.Row="1" Grid.Column="0" FontAttributes="Bold" Text="Solar altitude" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="2" Grid.Column="0" FontAttributes="Bold" Text="Solar azimuth" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="3" Grid.Column="0" FontAttributes="Bold" Text="Zenith time" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="4" Grid.Column="0" FontAttributes="Bold" Text="Zenith altitude" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="5" Grid.Column="0" FontAttributes="Bold" Text="Sunrise" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="6" Grid.Column="0" FontAttributes="Bold" Text="Sunset" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="7" Grid.Column="0" FontAttributes="Bold" Text="Total daylight" TextColor="Black"  />
 
-            <Label FontSize="10" Grid.Row="9" Grid.Column="0" FontAttributes="Bold" Text="Next solar event" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="10" Grid.Column="0" FontAttributes="Bold" Text="Event zenith altitude" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="11" Grid.Column="0" FontAttributes="Bold" Text="Event sunrise" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="12" Grid.Column="0" FontAttributes="Bold" Text="Event sunset" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="13" Grid.Column="0" FontAttributes="Bold" Text="Event total daylight" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="0" Grid.Column="1" x:Name="cityTime" TextColor="Black" />
+      <Label FontSize="10" Grid.Row="1" Grid.Column="1" x:Name="solarAltitude" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="2" Grid.Column="1" x:Name="solarAzimuth" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="3" Grid.Column="1" x:Name="solarZenithTime" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="4" Grid.Column="1" x:Name="solarZenithAltitude" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="5" Grid.Column="1" x:Name="solarSunrise" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="6" Grid.Column="1" x:Name="solarSunset" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="7" Grid.Column="1" x:Name="solarDaylight" TextColor="Black"  />
 
-            <Label FontSize="10" Grid.Row="9" Grid.Column="1" x:Name="solarNextEvent" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="10" Grid.Column="1" x:Name="solarZenithAltitudeEvent" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="11" Grid.Column="1" x:Name="solarSunriseEvent" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="12" Grid.Column="1" x:Name="solarSunsetEvent" TextColor="Black"  />
-            <Label FontSize="10" Grid.Row="13" Grid.Column="1" x:Name="solarDaylightEvent" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="9" Grid.Column="0" FontAttributes="Bold" Text="Next solar event" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="10" Grid.Column="0" FontAttributes="Bold" Text="Event zenith altitude" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="11" Grid.Column="0" FontAttributes="Bold" Text="Event sunrise" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="12" Grid.Column="0" FontAttributes="Bold" Text="Event sunset" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="13" Grid.Column="0" FontAttributes="Bold" Text="Event total daylight" TextColor="Black"  />
 
-        </Grid>
-    </StackLayout>
+      <Label FontSize="10" Grid.Row="9" Grid.Column="1" x:Name="solarNextEvent" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="10" Grid.Column="1" x:Name="solarZenithAltitudeEvent" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="11" Grid.Column="1" x:Name="solarSunriseEvent" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="12" Grid.Column="1" x:Name="solarSunsetEvent" TextColor="Black"  />
+      <Label FontSize="10" Grid.Row="13" Grid.Column="1" x:Name="solarDaylightEvent" TextColor="Black"  />
+
+    </Grid>
+  </StackLayout>
 </ContentPage>
