@@ -1,4 +1,6 @@
-﻿namespace SolarCalc
+﻿using System;
+
+namespace SolarCalc
 {
     public class City
     {

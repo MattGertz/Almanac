@@ -1,4 +1,7 @@
-﻿namespace SolarCalc
+﻿using System;
+using System.Collections.Generic;
+
+namespace SolarCalc
 {
     public static class SolarEvents
     {
