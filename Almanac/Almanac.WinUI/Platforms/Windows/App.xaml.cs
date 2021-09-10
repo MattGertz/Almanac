@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maui;
-using Microsoft.UI.Xaml;
-using Windows.ApplicationModel;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
+using Application = Microsoft.Maui.Controls.Application;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -10,7 +11,7 @@ namespace Almanac.WinUI
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : MauiWinUIApplication
+    public partial class App : Application
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -19,15 +20,8 @@ namespace Almanac.WinUI
         public App()
         {
             this.InitializeComponent();
+            MainPage = new MainPage();
         }
 
-        protected override IStartup OnCreateStartup() => new Startup();
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-
-            Microsoft.Maui.Essentials.Platform.OnLaunched(args);
-        }
     }
 }
